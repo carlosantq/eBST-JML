@@ -18,6 +18,9 @@ public class No {
 	private /*@ spec_public nullable @*/ Boolean ehCompleta;
 	
 	// Construtor
+	/*@ 
+	  @ 
+	  @*/
 	public No(int valor) {
 		this.valor = valor;
 		
@@ -38,6 +41,10 @@ public class No {
 	// Metodos
 	
 	// Chamado dentro de adicionar() para corrigir alturas
+	/*@ requires altura >= 0;
+	  @ assignable altura;
+	  @ ensures altura > \old(altura);
+	  @*/
 	private void atualizaAltura() {
 		if (pai == null) {
 			if (esq != null && dir != null) {
@@ -66,9 +73,9 @@ public class No {
 	
 	// Retorna o maior de dois numeros
 	/*@ assignable \nothing;
-	@ ensures (\result == altura2 && altura2 > altura3) || (\result == altura3 && altura3 >= altura2);
-	@*/
-	private int max(int altura2, int altura3) {
+	  @ ensures (\result == altura2 && altura2 > altura3) || (\result == altura3 && altura3 >= altura2);
+	  @*/
+	private /*@ pure @*/ int max(int altura2, int altura3) {
 		if (altura2 > altura3) {
 			return altura2;
 		}
@@ -78,6 +85,8 @@ public class No {
 	}
 
 	// Atualiza ehCheia
+	/*@ assignable ehCheia;
+	  @*/
 	private void atualizaCheia() {
 		
 		if (pai == null) {
@@ -123,7 +132,9 @@ public class No {
 	}
 	
 	// Checa se o no tem sub-arvores vazias
-	private Boolean temSubarvoreVazia() {
+	/*@ assignable \nothing;
+	  @*/
+	private /*@ pure @*/ Boolean temSubarvoreVazia() {
 		if (esq == null || dir == null) {
 			return true;
 		}
@@ -132,8 +143,10 @@ public class No {
 		}
 	}
 	
-	// Checa se o no tem sub-arvores não completas
-	private Boolean temSubarvoreNaoCompleta() {
+	// Checa se o no tem sub-arvores nao completas
+	/*@ assignable \nothing;
+	  @*/
+	private /*@ pure @*/ Boolean temSubarvoreNaoCompleta() {
 		if (!temSubarvoreVazia()) {
 			if (esq.ehCompleta && dir.ehCompleta) {
 				return false;
@@ -148,6 +161,8 @@ public class No {
 	}
 	
 	// Atualiza eh ehCompleta
+	/*@ assignable ehCompleta;
+	  @*/
 	private void atualizaCompleta() {
 		
 		if (pai == null) {
@@ -171,6 +186,8 @@ public class No {
 	}
 	
 	// Corrige nosEsq e nosDir de todo o caminho de insercao em caso de insercao falha
+	/*@ assignable this.pai.nosEsq, this.pai.nosDir;
+	  @*/
 	private void corrigeEsqDir() {
 		if (pai != null) {
 			if (this == pai.esq) {
@@ -185,6 +202,9 @@ public class No {
 	}
 		
 	// Adiciona novo elemento a arvore
+	/*@ 
+	  @ 
+	  @*/
 	public Boolean adicionar(int novoValor) {
 		// Novo valor maior que raiz
 		if (novoValor > valor) {
@@ -263,6 +283,8 @@ public class No {
 	}
 	
 	// Chamado dentro de remover() para corrigir alturas
+	/*@ assignable altura;
+	  @*/
 	private void atualizaAlturaRemover() {
 		if (pai == null) {
 			if (esq != null && dir != null) {
@@ -297,6 +319,8 @@ public class No {
 	}
 	
 	// Corrige nosEsq e nosDir de todo o caminho de remocao em caso e remocao falha
+	/*@ assignable this.pai.nosEsq, this.pai.nosDir;
+	  @*/
 	private void corrigeEsqDirRemover() {
 		if (pai != null) {
 			if (this == pai.esq) {
@@ -311,6 +335,9 @@ public class No {
 	}
 	
 	// Remove elemento da arvore
+	/*@ 
+	  @ 
+	  @*/
 	public Boolean remover(int valor) {
 		
 		// Chegou a uma folha e nao achou o elemento
@@ -490,7 +517,10 @@ public class No {
 	}
 	
 	// Procura o menor elemento de uma arvore
-	public No menorElemento() {
+	/*@ requires this != null;
+	  @ ensures \result != null;
+	  @*/
+	public /*@ pure @*/ No menorElemento() {
 		if (this.esq != null) {
 			return this.esq.menorElemento();
 		}
@@ -500,7 +530,10 @@ public class No {
 	}
 
 	//Procura o maior elemento de uma arvore
-	public No maiorElemento(){
+	/*@ requires this != null;
+	  @ ensures \result != null;
+	  @*/
+	public /*@ pure @*/ No maiorElemento(){
 		if (this.dir != null){
 			return this.dir.maiorElemento();
 		}else{
@@ -509,7 +542,9 @@ public class No {
 	}
 	
 	// Procura elemento "valor" na arvore
-	public Boolean procurar(int valor) {
+	/*@ requires this != null;
+	  @*/
+	public /*@ pure @*/ Boolean procurar(int valor) {
 		// Nao achou
 		if (valor != this.valor && esq == null && dir == null) {
 			return false;
@@ -529,7 +564,10 @@ public class No {
 		return false;
 	}
 	
-	// Retorna o elemento na posicao "valor" se a arvore fosse visitada em ordem simetrica 
+	// Retorna o elemento na posicao "valor" se a arvore fosse visitada em ordem simetrica
+	/*@ assignable posicao;
+	  @ requires this != null;
+	  @*/
 	public int enesimoElemento(int valor) {
 		
 		// A posicao do elemento eh igual o numero de elementos a sua esquerda + 1
@@ -550,7 +588,10 @@ public class No {
 	}
 	
 	// Retorna o numero de posicoes ocupadas pelo ancestral e seus filhos esquerdos
-	private int posicaoDosAncestrais() {
+	/*@ requires this != null;
+	  @ ensures \result >= 0;
+	  @*/
+	private /*@ pure @*/ int posicaoDosAncestrais() {
 		
 		// Se tiver pai
 		if (pai != null) {
@@ -567,8 +608,11 @@ public class No {
 		return 0;
 	}
 	
-	// Retorna a posicao do elemento "elemento" se a arvore fosse visitada em ordem simetrica
-	public int posicao(int elemento) {
+	// Retorna a posicao do elemento se a arvore fosse visitada em ordem simetrica
+	/*@ requires this != null;
+	  @ ensures \result >= 1;
+	  @*/
+	public /*@ pure @*/ int posicao(int elemento) {
 		
 		// Procura na sub-arvore direita
 		if (elemento > this.valor) {
@@ -585,6 +629,10 @@ public class No {
 	}
 	
 	//Retorna a mediana da arvore
+	/*@ assignable numElementos, mediana;
+	  @ requires this != null;
+	  @ ensures mediana != null && mediana > 0;
+	  @*/
 	public int mediana(){
 
 		//Calcula o numero de elementos armazenados na arvore
@@ -603,25 +651,30 @@ public class No {
 	}
 	
 	// Retorna true se a arvore for cheia
-	/*@ assignable \nothing;
-	@ ensures ehCheia == false || ehCheia == true;
-	@*/
-	public Boolean ehCheia() {
+	/*@ requires this != null;
+	  @ ensures \result != null;
+	  @*/
+	public /*@ pure @*/ Boolean ehCheia() {
 		return this.ehCheia;
 	}
 	
 	// Retorna true se a arvore for completa
-	/*@ assignable \nothing;
-	@ ensures ehCompleta == false || ehCompleta == true;
-	@*/
-	public Boolean ehCompleta() {
+	/*@ requires this != null;
+	  @ ensures \result != null;
+	  @*/
+	public /*@ pure @*/ Boolean ehCompleta() {
 		return this.ehCompleta;
 	}
 	
 	// Retorna a string que representa a arvore numa leitura por nivel
+	/*@ assignable retorno, fila;
+	  @ requires this != null;
+	  @ ensures retorno != null;
+	  @*/
 	public String toString() {
-		// Fila utilizada no percorrimento em nível da arvore
+		// Fila utilizada no percorrimento em nivel da arvore
 		Queue<No> fila = new LinkedList<No>();
+		
 		// String a ser retornada
 		String retorno = "";
 		
@@ -656,7 +709,9 @@ public class No {
 	}
 
 	// Imprime todos os elementos da arvore em pre-ordem detalhando seus atributos
-	public void print () {
+	/*@ requires this != null;
+	  @*/
+	public /*@ pure @*/ void print () {
 		System.out.println("> No: " + this.valor);
 		
 		if (this.pai != null) {

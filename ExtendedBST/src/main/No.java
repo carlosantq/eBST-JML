@@ -10,16 +10,16 @@ public class No {
 	private /*@ spec_public nullable @*/ No esq;
 	private /*@ spec_public nullable @*/ No dir;
 	
-	private int nosEsq;
-	private int nosDir;
-	private int altura;
+	private /*@ spec_public @*/ int nosEsq;
+	private /*@ spec_public @*/ int nosDir;
+	private /*@ spec_public @*/ int altura;
 	
 	private /*@ spec_public nullable @*/ Boolean ehCheia;
 	private /*@ spec_public nullable @*/ Boolean ehCompleta;
 	
 	// Construtor
 	/*@ 
-	  @ 
+	  @ assignable pai, esq, dir, nosEsq, nosDir, altura, ehCheia, ehCompleta;
 	  @*/
 	public No(int valor) {
 		this.valor = valor;
@@ -565,10 +565,9 @@ public class No {
 	}
 	
 	// Retorna o elemento na posicao "valor" se a arvore fosse visitada em ordem simetrica
-	/*@ assignable posicao;
-	  @ requires this != null;
+	/*@ requires this != null;
 	  @*/
-	public int enesimoElemento(int valor) {
+	public /*@ pure @*/ int enesimoElemento(int valor) {
 		
 		// A posicao do elemento eh igual o numero de elementos a sua esquerda + 1
 		int posicao = this.nosEsq + 1;
@@ -629,9 +628,7 @@ public class No {
 	}
 	
 	//Retorna a mediana da arvore
-	/*@ assignable numElementos, mediana;
-	  @ requires this != null;
-	  @ ensures mediana != null && mediana > 0;
+	/*@ requires this != null;
 	  @*/
 	public int mediana(){
 
@@ -667,9 +664,7 @@ public class No {
 	}
 	
 	// Retorna a string que representa a arvore numa leitura por nivel
-	/*@ assignable retorno, fila;
-	  @ requires this != null;
-	  @ ensures retorno != null;
+	/*@ also requires this != null;
 	  @*/
 	public String toString() {
 		// Fila utilizada no percorrimento em nivel da arvore

@@ -202,7 +202,7 @@ public class No {
 	}
 		
 	// Adiciona novo elemento a arvore
-	/*@ 
+	/*@ requires this != null
 	  @ 
 	  @*/
 	public Boolean adicionar(int novoValor) {
@@ -335,7 +335,7 @@ public class No {
 	}
 	
 	// Remove elemento da arvore
-	/*@ 
+	/*@ requires this != null
 	  @ 
 	  @*/
 	public Boolean remover(int valor) {
@@ -664,7 +664,8 @@ public class No {
 	}
 	
 	// Retorna a string que representa a arvore numa leitura por nivel
-	/*@ also requires this != null;
+	/*@ also 
+	  @ 	requires this != null;
 	  @*/
 	public String toString() {
 		// Fila utilizada no percorrimento em nivel da arvore

@@ -4,7 +4,7 @@ import java.util.Queue;
 
 public class No {
 	// Atributos
-	public int valor;
+	private /*@ spec_public nullable @*/ int valor;
 	
 	private /*@ spec_public nullable @*/ No pai;
 	private /*@ spec_public nullable @*/ No esq;

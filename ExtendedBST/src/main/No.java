@@ -202,7 +202,8 @@ public class No {
 	}
 		
 	// Adiciona novo elemento a arvore
-
+	/*@ requires this != null;
+	  @ ensures this.nosEsq+this.nosDir+1 >= \old(this.nosEsq+this.nosDir+1); @*/
 	public Boolean adicionar(int novoValor) {
 		// Novo valor maior que raiz
 		if (novoValor > valor) {

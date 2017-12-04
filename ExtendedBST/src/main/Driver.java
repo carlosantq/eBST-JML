@@ -140,7 +140,13 @@ import java.io.*;
 							break;
 						case "COMPLETA":
 							System.out.println(arvore.ehCompleta() ? "Eh Completa" : "Nao eh completa");
-							break;	
+							break;
+						case "MAIOR":
+							System.out.println(arvore.maiorElemento());
+							break;
+						case "MENOR":
+							System.out.println(arvore.menorElemento());
+							break;
 					}
 
 					}catch (NullPointerException e){

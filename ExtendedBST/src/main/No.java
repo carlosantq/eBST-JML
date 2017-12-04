@@ -43,7 +43,7 @@ public class No {
 	// Chamado dentro de adicionar() para corrigir alturas
 	/*@ requires altura >= 0;
 	  @ assignable altura;
-	  @ ensures altura > \old(altura);
+	  @ ensures altura >= \old(altura);
 	  @*/
 	private void atualizaAltura() {
 		if (pai == null) {
@@ -202,9 +202,7 @@ public class No {
 	}
 		
 	// Adiciona novo elemento a arvore
-	/*@ requires this != null
-	  @ 
-	  @*/
+
 	public Boolean adicionar(int novoValor) {
 		// Novo valor maior que raiz
 		if (novoValor > valor) {
@@ -335,9 +333,8 @@ public class No {
 	}
 	
 	// Remove elemento da arvore
-	/*@ requires this != null
-	  @ 
-	  @*/
+	/*@ requires this != null;
+	  @ ensures procurar(valor) == false; @*/
 	public Boolean remover(int valor) {
 		
 		// Chegou a uma folha e nao achou o elemento
@@ -518,8 +515,8 @@ public class No {
 	
 	// Procura o menor elemento de uma arvore
 	/*@ requires this != null;
-	  @ ensures \result != null;
-	  @*/
+	  @ ensures (\forall int i; 1 <= i && i <= this.nosEsq+this.nosDir+1;
+	  			(\result).valor <= enesimoElemento(i) ); @*/
 	public /*@ pure @*/ No menorElemento() {
 		if (this.esq != null) {
 			return this.esq.menorElemento();
@@ -531,8 +528,8 @@ public class No {
 
 	//Procura o maior elemento de uma arvore
 	/*@ requires this != null;
-	  @ ensures \result != null;
-	  @*/
+	  @ ensures (\forall int i; 1 <= i && i <= this.nosEsq+this.nosDir+1;
+	  			(\result).valor >= enesimoElemento(i) ); @*/
 	public /*@ pure @*/ No maiorElemento(){
 		if (this.dir != null){
 			return this.dir.maiorElemento();
